@@ -28,3 +28,10 @@ Plain INI has no way to express shared defaults. You either duplicate values acr
 ## The awkward edge
 
 Inheritance cycles are rejected with an error. If `a` inherits from `b` and `b` inherits from `a`, `resolveInheritance` throws `Circular inheritance detected involving section "a"` rather than looping forever. The same applies to a missing parent: you get `Inheritance references unknown section "missing"`.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
